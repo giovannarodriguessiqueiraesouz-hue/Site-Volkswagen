@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Atas e Assinaturas · Umuarama Autos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f3f5f9;--sf:#fff;--tx:#0f1b33;--mu:#64708a;--br:#dfe4ee;--pr:#001e50;--ac:#00a3e0;--ok:#168a4a;--wr:#c27a00;--er:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1220;--sf:#131c2f;--tx:#e8edf7;--mu:#93a0ba;--br:#25314b;--pr:#5aa9ff;--ac:#2fc0f5;--ok:#46c37b;--wr:#e6a93a;--er:#ef7b6e}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:linear-gradient(120deg,#001e50,#0a4a9c);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{margin:0;font-size:18px;flex:1}header small{opacity:.8;display:block;font-weight:400;font-size:12px}
+.logo{width:40px;height:40px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+nav{display:flex;gap:6px;flex-wrap:wrap}nav a{color:#fff;text-decoration:none;padding:6px 12px;border-radius:8px;font-size:14px;opacity:.85}nav a.on{background:rgba(255,255,255,.2);opacity:1}
+main{max-width:1050px;margin:0 auto;padding:20px}
+.card{background:var(--sf);border:1px solid var(--br);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.grow{flex:1}
+button,.btn{font:inherit;border:0;border-radius:9px;padding:8px 14px;cursor:pointer;background:var(--pr);color:#fff;font-weight:600;text-decoration:none;display:inline-block}
+.sec{background:transparent!important;color:var(--pr)!important;border:1px solid var(--br)!important}.ok{background:var(--ok)}.er{color:var(--er)!important}
+input,select,textarea{font:inherit;width:100%;padding:9px 11px;border:1px solid var(--br);border-radius:9px;background:var(--sf);color:var(--tx)}
+label{font-size:12px;color:var(--mu);font-weight:600;display:block;margin:10px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.st{font-size:28px;font-weight:800}.st small{display:block;font-size:12px;font-weight:600;color:var(--mu)}
+.tag{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--br);color:var(--mu)}
+.bd{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff}.bd.ok{background:var(--ok)}.bd.wr{background:var(--wr)}
+.bar{height:8px;background:var(--bg);border-radius:9px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--ok)}
+.pend{color:var(--wr);font-size:13px}.mu{color:var(--mu);font-size:13px}
+table.t{width:100%;border-collapse:collapse}table.t td,table.t th{padding:7px 8px;border-bottom:1px solid var(--br);text-align:left;font-size:14px}
+.sheet{background:#fff;color:#000;border:2px solid #000;padding:24px;font-family:Arial,sans-serif;font-size:13px}
+.sheet h2{margin:0 0 4px;font-size:18px}.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sheet img.pg{width:100%;display:block;margin:0 0 8px;border:1px solid #ccc}.doc{margin:10px 0}.doc table{border-collapse:collapse}.doc td,.doc th{border:1px solid #000;padding:3px 6px}
+.sheet table.sg{width:100%;border-collapse:collapse;margin-top:14px}.sg th,.sg td{border:1px solid #000;padding:6px 8px;text-align:left}
+.sg td.s{height:46px;width:36%;min-width:190px}.sg td.s img{max-height:40px;max-width:100%;display:block}.sg td.s small{font-size:9px;color:#444}
+.sg tr.me td{background:#e8f4ff}
+canvas{width:100%;height:110px;border:2px dashed #888;border-radius:8px;background:#fff;touch-action:none;display:block}
+@media print{header,.no-print{display:none!important}body{background:#fff}main{padding:0;max-width:none}.sheet{border:0;padding:0}.sheet img.pg{break-after:page;border:0}.sg tr.me td{background:#fff}@page{size:A4;margin:10mm}}
+</style></head><body>
+<header><div class="logo">VW</div><h1>Atas e Assinaturas<small>Umuarama Autos · Catalão e Itumbiara</small></h1><nav id="nav"></nav></header>
+<main id="app"><div class="card">Carregando…</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+let db,user,assets,admin=false,me=null,F=[],A=[],S=[],ready=0,printNext=null;
+const TIPOS=['Vendas','Pós-vendas','CEM','CSI'],CID=['Itumbiara','Catalão'];
+const MES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ss=(k,v)=>{try{if(v!==undefined)sessionStorage.setItem(k,v);return sessionStorage.getItem(k)||''}catch(e){return ''}};
+const fdt=t=>new Date(t).toLocaleString('pt-BR');
+const myF=()=>me&&me.email?F.find(f=>(f.email||'').toLowerCase()===me.email.toLowerCase()):null;
+const sigOf=(a,fid)=>S.find(s=>s.ataId===a.id&&s.funcId===fid);
+const parts=a=>(a.partIds||[]).map(id=>F.find(f=>f.id===id)).filter(Boolean);
+const missing=a=>parts(a).filter(f=>!sigOf(a,f.id));
+const done=a=>parts(a).length>0&&!missing(a).length;
+const titulo=a=>a.tit||`Ata de Reunião ${a.tipo} - ${MES[a.mes-1].toUpperCase()} ${a.ano}${a.dn?' DN '+a.dn:''} - ${a.cidade}`;
+const link=a=>location.href.split('#')[0]+'#a-'+a.id;
+const wa=(tel,txt)=>'https://wa.me/'+(tel?'55'+String(tel).replace(/\D/g,'').replace(/^55/,''):'')+'?text='+encodeURIComponent(txt);
+async function init(){
+ try{const c=window.claude;db=await c.use('db');user=await c.use('user');assets=await c.use('assets');
+  if(user){admin=await user.canEdit();me=await user.me()}}catch(e){}
+ if(!db){app.innerHTML='<div class="card">Entre na sua conta Claude para abrir este sistema.</div>';return}
+ const sub=(n,fn)=>db.collection(n).onSnapshot(s=>{fn(s.docs.map(d=>({id:d.id,...d.data()})));ready=1;route()},e=>{app.innerHTML='<div class="card">Erro ao carregar dados: '+esc(e.message||e.code)+'</div>'});
+ sub('func',x=>F=x);sub('atas',x=>A=x);sub('sigs',x=>S=x);
+ addEventListener('hashchange',route)}
+function nav(h){const items=admin?[['','Painel'],['atas','Atas'],['func','Funcionários'],['novo','+ Nova ata']]:[['','Minhas assinaturas']];
+ $('#nav').innerHTML=items.map(([k,t])=>`<a href="#${k}" class="${h===k||(k===''&&h.startsWith('a-'))?'on':''}">${t}</a>`).join('')}
+function route(){if(!ready)return;const h=location.hash.slice(1);nav(h);
+ if(h.startsWith('a-')){const a=A.find(x=>x.id===h.slice(2));return a?view(a):(app.innerHTML='<div class="card">Ata não encontrada.</div>')}
+ if(!admin)return mine();
+ if(h==='novo')return form();if(h==='func')return funcs();if(h==='atas')return lista();return painel()}
+function badge(a){return done(a)?'<span class="bd ok">Pronta p/ imprimir</span>':`<span class="bd wr">${parts(a).length-missing(a).length}/${parts(a).length} assinaturas</span>`}
+function card(a,extra){const p=parts(a),n=p.length-missing(a).length;return `<div class="card"><div class="row"><b class="grow" style="cursor:pointer" onclick="location.hash='a-${a.id}'">${esc(titulo(a))}</b><span class="tag">${esc(a.cidade)}</span>${badge(a)}</div>
+ <div class="bar"><i style="width:${p.length?n/p.length*100:0}%"></i></div>${missing(a).length?`<div class="pend" style="margin-top:6px">Faltam: ${missing(a).map(f=>esc(f.nome)).join(', ')}</div>`:''}${extra||''}</div>`}
+function painel(){const pr=A.filter(done),pe=A.filter(a=>!done(a));
+ const por=F.map(f=>({f,n:A.filter(a=>(a.partIds||[]).includes(f.id)&&!sigOf(a,f.id)).length})).filter(x=>x.n).sort((a,b)=>b.n-a.n);
+ app.innerHTML=`<div class="g2" style="margin-bottom:12px">${[['Atas',A.length],['Prontas p/ imprimir',pr.length],['Aguardando assinaturas',pe.length],['Funcionários',F.length]].map(([t,v])=>`<div class="card st">${v}<small>${t}</small></div>`).join('')}</div>
+ ${CID.map(c=>`<div class="card"><b>${c}</b><div class="mu">${A.filter(a=>a.cidade===c&&done(a)).length} prontas · ${A.filter(a=>a.cidade===c&&!done(a)).length} pendentes</div></div>`).join('')}
+ <h3>Prontas para imprimir</h3>${pr.length?pr.map(a=>card(a,`<div class="row" style="margin-top:8px"><button onclick="printAta('${a.id}')">🖨 Imprimir</button></div>`)).join(''):'<div class="card mu">Nenhuma ata completa ainda.</div>'}
+ <h3>Aguardando assinaturas</h3>${pe.length?pe.map(a=>card(a)).join(''):'<div class="card mu">Nada pendente.</div>'}
+ <h3>Pendências por funcionário</h3><div class="card">${por.length?`<table class="t">${por.map(x=>`<tr><td>${esc(x.f.nome)}<div class="mu">${esc(x.f.cidade)} · ${esc(x.f.funcao)}</div></td><td><b>${x.n}</b> pendente(s)</td><td>${x.f.tel?`<a target="_blank" href="${wa(x.f.tel,'Olá '+x.f.nome.split(' ')[0]+', você tem '+x.n+' ata(s) para assinar: '+location.href.split('#')[0])}">Cobrar no WhatsApp</a>`:''}</td></tr>`).join('')}</table>`:'<span class="mu">Ninguém com pendências.</span>'}</div>`}
+window.printAta=id=>{printNext=id;location.hash='a-'+id;if(location.hash==='#a-'+id)route()};
+function lista(){const c=ss('c'),t=ss('t'),s=ss('s');
+ const f=A.filter(a=>(!c||a.cidade===c)&&(!t||a.tipo===t)&&(!s||(s==='p'?done(a):!done(a)))).sort((a,b)=>b.ano*100+b.mes-(a.ano*100+a.mes));
+ app.innerHTML=`<div class="row" style="margin-bottom:12px"><h2 class="grow" style="margin:0">Todas as atas</h2>
+ <select id="fc" style="width:auto"><option value="">Todas as cidades</option>${CID.map(x=>`<option ${x===c?'selected':''}>${x}</option>`).join('')}</select>
+ <select id="ft" style="width:auto"><option value="">Todos os tipos</option>${TIPOS.map(x=>`<option ${x===t?'selected':''}>${x}</option>`).join('')}</select>
+ <select id="fs" style="width:auto"><option value="">Qualquer status</option><option value="p" ${s==='p'?'selected':''}>Prontas p/ imprimir</option><option value="a" ${s==='a'?'selected':''}>Aguardando</option></select></div>
+ ${f.map(a=>card(a,`<div class="row" style="margin-top:8px"><button class="sec" onclick="location.hash='a-${a.id}'">Abrir</button>${done(a)?`<button onclick="printAta('${a.id}')">🖨 Imprimir</button>`:''}<button class="sec er" onclick="delAta('${a.id}')">Excluir</button></div>`)).join('')||'<div class="card mu">Nenhuma ata.</div>'}`;
+ $('#fc').onchange=e=>{ss('c',e.target.value);lista()};$('#ft').onchange=e=>{ss('t',e.target.value);lista()};$('#fs').onchange=e=>{ss('s',e.target.value);lista()}}
+window.delAta=async id=>{if(!confirm('Excluir esta ata e suas assinaturas?'))return;for(const s of S.filter(s=>s.ataId===id))await db.collection('sigs').doc(id+'_'+s.funcId).delete();await db.collection('atas').doc(id).delete()};
+function mine(){const f=myF();
+ if(!me||!me.email){app.innerHTML='<div class="card">Permita o acesso ao seu e-mail para o sistema te identificar e recarregue a página.</div>';return}
+ if(!f){app.innerHTML=`<div class="card"><b>Seu e-mail (${esc(me.email)}) não está cadastrado.</b><p class="mu">Peça ao administrador para cadastrar este e-mail.</p></div>`;return}
+ const l=A.filter(a=>(a.partIds||[]).includes(f.id)),pe=l.filter(a=>!sigOf(a,f.id)),ok=l.filter(a=>sigOf(a,f.id));
+ app.innerHTML=`<h2 style="margin-top:0">Olá, ${esc(f.nome.split(' ')[0])}</h2><h3>Para assinar (${pe.length})</h3>${pe.map(a=>`<div class="card"><div class="row"><b class="grow">${esc(titulo(a))}</b><a class="btn" href="#a-${a.id}">Ler e assinar</a></div></div>`).join('')||'<div class="card mu">Você não tem pendências. 🎉</div>'}
+ <h3>Já assinadas (${ok.length})</h3>${ok.map(a=>`<div class="card"><div class="row"><span class="grow">${esc(titulo(a))}</span><span class="mu">${fdt(sigOf(a,f.id).at)}</span><a href="#a-${a.id}">Ver</a></div></div>`).join('')||'<div class="mu">Nenhuma.</div>'}`}
+function funcs(){app.innerHTML=`<div class="card"><h2 style="margin-top:0">Cadastrar funcionários</h2><p class="mu">Um por linha: <b>Nome; Função; Cidade; E-mail; WhatsApp</b>. O e-mail precisa ser o mesmo que a pessoa usa para entrar no Claude: é ele que identifica quem assina.</p>
+ <textarea id="bulk" rows="5" placeholder="Poliana Sousa de Moura; Gestora de Vendas; Itumbiara; poliana@email.com; 64999990000"></textarea><div class="row" style="margin-top:10px"><button id="add">Cadastrar</button></div></div>
+ ${CID.map(c=>`<div class="card"><b>${c}</b><table class="t">${F.filter(f=>f.cidade===c).sort((a,b)=>a.nome.localeCompare(b.nome)).map(f=>`<tr><td>${esc(f.nome)}<div class="mu">${esc(f.funcao)} · ${esc(f.email||'sem e-mail')}${f.tel?' · '+esc(f.tel):''}</div></td><td style="text-align:right"><button class="sec er" onclick="delF('${f.id}')">Remover</button></td></tr>`).join('')||'<tr><td class="mu">Nenhum.</td></tr>'}</table></div>`).join('')}`;
+ $('#add').onclick=async()=>{let n=0,bad=0;for(const l of $('#bulk').value.split('\n').map(x=>x.trim()).filter(Boolean)){const [nome,funcao,cid,email,tel]=l.split(';').map(x=>x.trim());
+  const cidade=CID.find(c=>c.toLowerCase()===(cid||'').toLowerCase());if(!nome||!cidade||!email){bad++;continue}
+  await db.collection('func').doc(Date.now().toString(36)+(n++)).set({nome,funcao:funcao||'',cidade,email:email.toLowerCase(),tel:tel||''})}
+  if(bad)alert(bad+' linha(s) ignorada(s): precisam de Nome, Cidade (Itumbiara ou Catalão) e E-mail.')}}
+window.delF=async id=>{if(confirm('Remover funcionário?'))await db.collection('func').doc(id).delete()};
+async function pdfPages(file,prog){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+ const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise,out=[];
+ for(let i=1;i<=Math.min(pdf.numPages,12);i++){prog('Processando página '+i+' de '+pdf.numPages+'…');const pg=await pdf.getPage(i),vp=pg.getViewport({scale:1.5}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+  await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.72));out.push((await assets.upload(b)).url)}return out}
+function form(a){a=a||{};const now=new Date(),sel=new Set(a.partIds||[]);
+ app.innerHTML=`<div class="card"><h2 style="margin-top:0">${a.id?'Editar':'Nova'} ata</h2>
+ <div class="g2"><div><label>Tipo</label><select id="tipo">${TIPOS.map(t=>`<option ${t===a.tipo?'selected':''}>${t}</option>`).join('')}</select></div>
+ <div><label>Cidade</label><select id="cid">${CID.map(t=>`<option ${t===(a.cidade||ss('c'))?'selected':''}>${t}</option>`).join('')}</select></div>
+ <div><label>Mês</label><select id="mes">${MES.map((m,i)=>`<option value="${i+1}" ${(a.mes||now.getMonth()+1)==i+1?'selected':''}>${m}</option>`).join('')}</select></div>
+ <div><label>Ano</label><input id="ano" type="number" value="${a.ano||now.getFullYear()}"></div>
+ <div><label>Data e hora da reunião</label><input id="dt" value="${esc(a.dt||'')}" placeholder="28/10/2026 18:00hs"></div>
+ <div><label>DN (opcional)</label><input id="dn" value="${esc(a.dn||'')}" placeholder="1483"></div></div>
+ <label>Título (opcional, senão é gerado automaticamente)</label><input id="tit" value="${esc(a.tit||'')}">
+ <label>Documento da ata: PDF (recomendado, mantém o layout) ou Word (.docx)</label><input type="file" id="file" accept=".pdf,.docx">
+ ${a.id?'<div class="mu">Deixe em branco para manter o documento atual.</div>':''}
+ <label>Quem deve assinar</label><div id="pl"></div>
+ <div class="row" style="margin-top:14px"><button id="sv">Salvar ata</button><button class="sec" onclick="location.hash='atas'">Cancelar</button><span id="msg" class="mu"></span></div></div>`;
+ const pl=()=>{const c=$('#cid').value,l=F.filter(f=>f.cidade===c).sort((x,y)=>x.nome.localeCompare(y.nome));
+  $('#pl').innerHTML=l.length?`<div class="row"><button class="sec" id="all">Marcar todos de ${c}</button></div>`+l.map(f=>`<label style="text-transform:none;font-size:14px;color:var(--tx);font-weight:400"><input type="checkbox" style="width:auto" value="${f.id}" ${sel.has(f.id)?'checked':''}> ${esc(f.nome)} <span class="mu">· ${esc(f.funcao)}</span></label>`).join(''):'<div class="mu">Cadastre funcionários dessa cidade primeiro (menu Funcionários).</div>';
+  document.querySelectorAll('#pl input').forEach(i=>i.onchange=()=>i.checked?sel.add(i.value):sel.delete(i.value));
+  if($('#all'))$('#all').onclick=()=>{l.forEach(f=>sel.add(f.id));pl()}};
+ $('#cid').onchange=()=>{sel.clear();pl()};pl();
+ $('#sv').onclick=async()=>{const ids=[...sel].filter(id=>F.some(f=>f.id===id&&f.cidade===$('#cid').value));if(!ids.length)return alert('Marque quem deve assinar.');
+  const f=$('#file').files[0],m=$('#msg');if(!f&&!a.id)return alert('Envie o documento da ata.');
+  const d={tipo:$('#tipo').value,cidade:$('#cid').value,mes:+$('#mes').value,ano:+$('#ano').value,dt:$('#dt').value,dn:$('#dn').value,tit:$('#tit').value,partIds:ids,pages:a.pages||[],html:a.html||'',criada:a.criada||Date.now()};
+  try{$('#sv').disabled=true;
+   if(f){const n=f.name.toLowerCase();d.pages=[];d.html='';
+    if(n.endsWith('.pdf')){if(!assets)throw{message:'Upload de PDF indisponível nesta conta. Use Word (.docx).'};d.pages=await pdfPages(f,t=>m.textContent=t)}
+    else if(n.endsWith('.docx')){m.textContent='Lendo Word…';d.html=(await mammoth.convertToHtml({arrayBuffer:await f.arrayBuffer()})).value.replace(/<img[^>]*>/g,'');if(d.html.length>230000)throw{message:'Documento muito grande. Use PDF.'}}
+    else throw{message:'Use PDF ou .docx'}}
+   const id=a.id||Date.now().toString(36);await db.collection('atas').doc(id).set(d);location.hash='a-'+id}
+  catch(e){alert('Erro: '+(e.message||e.code||e));$('#sv').disabled=false;m.textContent=''}}}
+function pad(el,onSave){el.innerHTML='<canvas></canvas><div class="row no-print" style="margin-top:6px"><button class="sec">Limpar</button><button class="ok">Confirmar</button></div>';
+ const cv=el.querySelector('canvas'),r=cv.getBoundingClientRect();cv.width=r.width*2;cv.height=r.height*2;const x=cv.getContext('2d');x.scale(2,2);x.lineWidth=2.2;x.lineCap='round';x.strokeStyle='#001e50';
+ let dr=0,ink=0;const pt=e=>{const b=cv.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+ cv.onpointerdown=e=>{dr=ink=1;cv.setPointerCapture(e.pointerId);x.beginPath();x.moveTo(...pt(e))};cv.onpointermove=e=>{if(dr){x.lineTo(...pt(e));x.stroke()}};cv.onpointerup=()=>dr=0;
+ const [b1,b2]=el.querySelectorAll('button');b1.onclick=()=>{x.clearRect(0,0,cv.width,cv.height);ink=0};
+ b2.onclick=()=>{if(!ink)return alert('Desenhe sua assinatura.');const o=document.createElement('canvas');o.width=360;o.height=120;o.getContext('2d').drawImage(cv,0,0,360,120);b2.disabled=true;onSave(o.toDataURL('image/png'))}}
+function view(a){const f=myF(),mine=f&&(a.partIds||[]).includes(f.id);
+ if(!admin&&!mine){app.innerHTML='<div class="card">Você não participa desta ata.</div>';return}
+ const p=parts(a),canSign=mine&&!sigOf(a,f.id),L=link(a);
+ const adm=admin?`<div class="row no-print" style="margin-bottom:12px"><button class="sec" onclick="location.hash='atas'">← Atas</button><span class="grow"></span><button class="sec" id="cp">Copiar link</button><a class="btn sec" target="_blank" href="${wa('',`Assine a ${titulo(a)}: ${L}`)}">Convidar no WhatsApp</a><button class="sec" id="ed">Editar</button><button class="sec" id="dup">Duplicar p/ próximo mês</button><button id="pr">🖨 Imprimir</button></div>
+ <div class="card no-print">${badge(a)} <span class="mu">${esc(a.cidade)}</span>${missing(a).length?`<table class="t" style="margin-top:8px">${missing(a).map(m=>`<tr><td>${esc(m.nome)}<div class="mu">${esc(m.email||'')}</div></td><td style="text-align:right">${m.tel?`<a target="_blank" href="${wa(m.tel,`Olá ${m.nome.split(' ')[0]}, assine a ${titulo(a)}: ${L}`)}">Enviar convite</a>`:'<span class="mu">sem WhatsApp</span>'}</td></tr>`).join('')}</table>`:''}</div>`
+  :`<div class="row no-print" style="margin-bottom:12px"><button class="sec" onclick="location.hash=''">← Minhas assinaturas</button></div>`;
+ app.innerHTML=adm+`<div class="sheet"><div class="hd"><div><h2>${esc(titulo(a))}</h2>${esc(a.dt)}</div><div style="text-align:right;font-weight:800;font-size:20px;color:#001e50;font-style:italic">Umuarama <small style="font-size:11px">Autos</small></div></div>
+ ${(a.pages||[]).map(u=>`<img class="pg" src="${esc(u)}">`).join('')}${a.html?`<div class="doc">${a.html}</div>`:''}
+ <b style="display:block;margin-top:12px">Participaram desta reunião:</b><table class="sg"><tr><th>Nome:</th><th>Função:</th><th>Assinatura:</th></tr>
+ ${p.map(x=>{const s=sigOf(a,x.id);return `<tr class="${canSign&&x.id===f.id?'me':''}"><td>${esc(x.nome)}</td><td>${esc(x.funcao)}</td><td class="s" ${canSign&&x.id===f.id?'id="mypad"':''}>${s?`<img src="${s.img}"><small>${fdt(s.at)}</small>`:(canSign&&x.id===f.id?'':'')}</td></tr>`}).join('')}</table></div>`;
+ if(canSign)pad($('#mypad'),async img=>{try{await db.collection('sigs').doc(a.id+'_'+f.id).set({ataId:a.id,funcId:f.id,img,at:Date.now(),uid:await user.id(),email:me.email})}catch(e){alert('Erro: '+(e.message||e.code))}});
+ if(admin){$('#cp').onclick=()=>navigator.clipboard.writeText(L).then(()=>$('#cp').textContent='Copiado!').catch(()=>prompt('Copie:',L));$('#pr').onclick=()=>print();$('#ed').onclick=()=>form(a);
+  $('#dup').onclick=async()=>{let m=a.mes+1,y=a.ano;if(m>12){m=1;y++}const id=Date.now().toString(36),{id:_,...d}=a;await db.collection('atas').doc(id).set({...d,mes:m,ano:y,tit:'',dt:'',criada:Date.now()});location.hash='a-'+id}}
+ if(printNext===a.id){printNext=null;setTimeout(()=>print(),900)}}
+init();
+</script></body></html>
